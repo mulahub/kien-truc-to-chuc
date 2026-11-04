@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMAA-OS Enterprise Architect v3.0 — Hệ Thống Thiết Kế Mô Hình Tổ Chức Thực Chiến Việt Nam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-display: 'Be Vietnam Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --primary: #1D4ED8;
+      --primary-light: #3B82F6;
+      --emerald: #059669;
+      --amber: #D97706;
+      --purple: #6D28D9;
+      --cyan: #0E7490;
+      --rose: #BE123C;
+    }
+
+    [data-theme="light"] {
+      --bg-page: #F1F5F9;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F8FAFC;
+      --bg-muted: #EFF6FF;
+      --bg-box: #F8FAFC;
+      --bg-input: #FFFFFF;
+      --bg-nav: rgba(255, 255, 255, 0.92);
+
+      --border-main: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --border-focus: #2563EB;
+      --line-tree: #94A3B8;
+
+      --text-title: #0F172A;
+      --text-body: #1E293B;
+      --text-secondary: #475569;
+      --text-tertiary: #64748B;
+
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.07);
+      --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.1);
+
+      --tag-blue-bg: #DBEAFE; --tag-blue-fg: #1E40AF;
+      --tag-emerald-bg: #D1FAE5; --tag-emerald-fg: #065F46;
+      --tag-amber-bg: #FEF3C7; --tag-amber-fg: #92400E;
+      --tag-purple-bg: #EDE9FE; --tag-purple-fg: #5B21B6;
+      --tag-rose-bg: #FFE4E6; --tag-rose-fg: #9F1239;
+      --tag-cyan-bg: #CFFAFE; --tag-cyan-fg: #155E75;
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #090D16;
+      --bg-surface: #111827;
+      --bg-subtle: #161F30;
+      --bg-muted: #1E293B;
+      --bg-box: #0F172A;
+      --bg-input: #0B1120;
+      --bg-nav: rgba(17, 24, 39, 0.92);
+
+      --border-main: #1F2937;
+      --border-strong: #374151;
+      --border-focus: #3B82F6;
+      --line-tree: #475569;
+
+      --text-title: #F8FAFC;
+      --text-body: #E2E8F0;
+      --text-secondary: #94A3B8;
+      --text-tertiary: #64748B;
+
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 16px 40px -6px rgba(0, 0, 0, 0.6);
+
+      --tag-blue-bg: rgba(59, 130, 246, 0.18); --tag-blue-fg: #93C5FD;
+      --tag-emerald-bg: rgba(16, 185, 129, 0.18); --tag-emerald-fg: #6EE7B7;
+      --tag-amber-bg: rgba(245, 158, 11, 0.18); --tag-amber-fg: #FCD34D;
+      --tag-purple-bg: rgba(139, 92, 246, 0.18); --tag-purple-fg: #C4B5FD;
+      --tag-rose-bg: rgba(244, 63, 94, 0.18); --tag-rose-fg: #FDA4AF;
+      --tag-cyan-bg: rgba(6, 182, 212, 0.18); --tag-cyan-fg: #67E8F9;
+
+      --primary: #3B82F6;
+      --emerald: #10B981;
+      --amber: #F59E0B;
+      --purple: #8B5CF6;
+      --cyan: #06B6D4;
+      --rose: #F43F5E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-nav);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-main);
+      padding: 14px 28px;
+    }
+
+    .topbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1E40AF 0%, #0D9488 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .vn-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: var(--tag-emerald-bg);
+      color: var(--tag-emerald-fg);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-theme {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      color: var(--text-title);
+      padding: 7px 14px;
+      border-radius: 99px;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-theme:hover {
+      border-color: var(--border-focus);
+    }
+
+    /* MAIN WRAPPER */
+    .main-container {
+      max-width: 1320px;
+      margin: 24px auto 60px;
+      padding: 0 24px;
+    }
+
+    /* WIZARD PROGRESS */
+    .wizard-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .wiz-step {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .wiz-step:hover {
+      border-color: var(--border-strong);
+    }
+
+    .wiz-step.active {
+      border-color: var(--border-focus);
+      background: var(--bg-muted);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .wiz-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .wiz-step.active .wiz-num {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFF;
+    }
+
+    .wiz-info .wiz-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--text-title);
+      display: block;
+    }
+
+    .wiz-info .wiz-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* SECTION CARD */
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-main);
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 4px;
+    }
+
+    .panel-subtitle {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    /* VARIABLE 1: 4 VIETNAMESE SCALES */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1080px) {
+      .scale-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .scale-grid, .wizard-nav { grid-template-columns: 1fr; }
+    }
+
+    .scale-card {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-main);
+      border-radius: 14px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .scale-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .scale-card.selected {
+      border-color: var(--primary);
+      background: var(--bg-muted);
+      box-shadow: var(--shadow-md);
+    }
+
+    .scale-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    .scale-card h3 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 6px;
+    }
+
+    .scale-card p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .scale-specs {
+      border-top: 1px dashed var(--border-strong);
+      padding-top: 10px;
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .scale-specs b {
+      color: var(--text-body);
+    }
+
+    /* VARIABLE 2: VIETNAM IDEA MATRIX */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-pill.active, .filter-pill:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFF;
+    }
+
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 1080px) {
+      .ideas-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .ideas-grid { grid-template-columns: 1fr; }
+    }
+
+    .idea-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .idea-card:hover, .idea-card.active {
+      border-color: var(--primary);
+      background: var(--bg-muted);
+      transform: translateY(-2px);
+    }
+
+    .idea-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+
+    .idea-sector {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .idea-card h4 {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .idea-card .idea-meta {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+    }
+
+    /* INPUT BOX */
+    .seed-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .seed-box label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 8px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text-body);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      line-height: 1.6;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    /* BUTTONS */
+    .btn-cta {
+      background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%);
+      color: #FFF;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(29, 78, 216, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(29, 78, 216, 0.4);
+    }
+
+    .btn-cta.emerald {
+      background: linear-gradient(135deg, #047857 0%, #10B981 100%);
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+
+    .btn-outline {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      color: var(--text-title);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--border-focus);
+      background: var(--bg-subtle);
+    }
+
+    /* STAGE 2: 4 BLOCKS */
+    .quad-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .quad-grid { grid-template-columns: 1fr; }
+    }
+
+    .quad-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .quad-card.q-b1 { border-top: 4px solid var(--amber); }
+    .quad-card.q-b2 { border-top: 4px solid var(--primary); }
+    .quad-card.q-b3 { border-top: 4px solid var(--purple); }
+    .quad-card.q-b4 { border-top: 4px solid var(--emerald); }
+
+    .quad-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .quad-title {
+      font-family: var(--font-display);
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-body);
+      margin-bottom: 5px;
+    }
+
+    .field-hint {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* STAGE 3: EXECUTIVE REPORT & VISUAL DIAGRAMS */
+    .report-header-banner {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+      color: #FFF;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .report-header-banner h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .report-header-banner p {
+      color: #CBD5E1;
+      font-size: 13.5px;
+      max-width: 780px;
+    }
+
+    /* VISUAL ORG TREE (HIERARCHICAL DIAGRAM) */
+    .org-tree-wrapper {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: 14px;
+      padding: 28px 20px;
+      margin: 18px 0;
+      overflow-x: auto;
+    }
+
+    .tree-level-1 {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .tree-level-1::after {
+      content: '';
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      width: 2px;
+      height: 28px;
+      background: var(--line-tree);
+    }
+
+    .tree-ceo-node {
+      background: var(--bg-surface);
+      border: 2px solid var(--amber);
+      border-radius: 12px;
+      padding: 16px 24px;
+      max-width: 460px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .tree-connector-bar {
+      width: 78%;
+      height: 2px;
+      background: var(--line-tree);
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .tree-branches {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 960px) {
+      .tree-branches { grid-template-columns: repeat(2, 1fr); }
+      .tree-connector-bar { display: none; }
+    }
+    @media (max-width: 600px) {
+      .tree-branches { grid-template-columns: 1fr; }
+    }
+
+    .tree-branch-col {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tree-branch-col.b-core { border-top: 4px solid var(--purple); }
+    .tree-branch-col.b-growth { border-top: 4px solid var(--primary); }
+    .tree-branch-col.b-ops { border-top: 4px solid var(--emerald); }
+    .tree-branch-col.b-tech { border-top: 4px solid var(--cyan); }
+
+    .branch-head {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .branch-explain {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .sub-roles-list {
+      border-top: 1px dashed var(--border-main);
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sub-role-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .sub-role-item b {
+      display: block;
+      color: var(--text-title);
+      margin-bottom: 2px;
+    }
+
+    /* CONCENTRIC INFRASTRUCTURE DIAGRAM */
+    .infra-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 24px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 960px) {
+      .infra-layout { grid-template-columns: 1fr; }
+    }
+
+    .concentric-rings {
+      background: var(--bg-subtle);
+      border: 2px dashed var(--cyan);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      position: relative;
+    }
+
+    .ring-label-top {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .ring-box {
+      border: 1.5px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+      background: var(--bg-surface);
+      transition: all 0.2s;
+    }
+
+    .ring-1 { border-color: #6366F1; }
+    .ring-2 { border-color: #3B82F6; background: var(--bg-subtle); }
+    .ring-3 { border-color: #10B981; background: var(--bg-surface); }
+    .ring-4 { border-color: #F59E0B; background: var(--bg-subtle); }
+    .ring-core {
+      background: linear-gradient(135deg, #DC2626 0%, #E11D48 100%);
+      color: #FFF;
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 8px;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+    }
+
+    .ring-title {
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .ring-sub {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }
+
+    .infra-glossary {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .glossary-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+
+    .glossary-item h4 {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 4px;
+    }
+
+    .glossary-item p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    /* VALUE STREAM PIPELINE */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 960px) {
+      .pipeline-grid { grid-template-columns: 1fr; }
+    }
+
+    .pipe-step {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .pipe-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .pipe-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--text-title);
+      margin-bottom: 6px;
+    }
+
+    .pipe-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .pipe-data {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      color: var(--text-tertiary);
+    }
+
+    /* TABLE RACI & SCORECARD */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .data-table th, .data-table td {
+      border: 1px solid var(--border-main);
+      padding: 12px 14px;
+      text-align: left;
+    }
+
+    .data-table th {
+      background: var(--bg-subtle);
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #059669;
+      color: #FFF;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      display: none;
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STICKY TOPBAR -->
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">EA</div>
+        <div class="brand-text">
+          <h1>HỆ THỐNG KIẾN TRÚC TỔ CHỨC DOANH NGHIỆP V3.0</h1>
+          <p>Chuẩn hóa theo thực tiễn Doanh nghiệp Việt Nam • Mô hình 4 Tầng × 4 Blocks × 7 Bước</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="vn-badge">🇻🇳 CHUẨN THỰC TIỄN VIỆT NAM</span>
+        <button class="btn-theme" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-label">Giao diện Tối</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <!-- WIZARD STEP BAR -->
+    <div class="wizard-nav">
+      <div class="wiz-step active" id="wiz-1" onclick="goStep(1)">
+        <div class="wiz-num">1</div>
+        <div class="wiz-info">
+          <span class="wiz-title">Chọn Quy Mô & Bài Toán Thực Tế</span>
+          <span class="wiz-desc">4 Cấp quy mô tại VN × 8 Mô hình mẫu</span>
+        </div>
+      </div>
+      <div class="wiz-step" id="wiz-2" onclick="goStep(2)">
+        <div class="wiz-num">2</div>
+        <div class="wiz-info">
+          <span class="wiz-title">Hoạch Định 4 Blocks Nền Tảng</span>
+          <span class="wiz-desc">Làm rõ Mỏ vàng, Cách đào, Người đào & Vốn</span>
+        </div>
+      </div>
+      <div class="wiz-step" id="wiz-3" onclick="goStep(3)">
+        <div class="wiz-num">3</div>
+        <div class="wiz-info">
+          <span class="wiz-title">Bản V1 Kiến Trúc Tổ Chức & Giải Nghĩa</span>
+          <span class="wiz-desc">Sơ đồ cây, Hạ tầng đồng tâm, Luồng & OKRs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <div id="step-1-view">
+      <!-- BIẾN 1: QUY MÔ THỰC TẾ TẠI VIỆT NAM -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">📐 Biến Số 1: Chọn Quy Mô Tổ Chức Thực Tế Tại Việt Nam</div>
+            <div class="panel-subtitle">Phân tầng sát với thực tiễn phát triển của doanh nghiệp tư nhân Việt Nam (từ nhóm khởi sự tinh gọn đến nền tảng hệ sinh thái):</div>
+          </div>
+        </div>
+
+        <div class="scale-grid">
+          <div class="scale-card selected" id="sc-micro" onclick="selectScale('micro')">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-emerald-bg); color: var(--tag-emerald-fg);">CẤP 1 • MICRO-CELL</span>
+              <h3>⚡ Tiểu Đội Tự Trị / Hộ KD Số</h3>
+              <p>Mô hình siêu tinh gọn: Founder nắm nút thắt + 80% vận hành tự động bằng phần mềm & AI Agents.</p>
+            </div>
+            <div class="scale-specs">
+              <span>👥 <b>Nhân sự:</b> 1 – 9 người</span>
+              <span>💰 <b>Vốn mồi:</b> 20 – 300 triệu VNĐ</span>
+              <span>📈 <b>Doanh thu:</b> &lt; 10 tỷ/năm</span>
+            </div>
+          </div>
+
+          <div class="scale-card" id="sc-sme" onclick="selectScale('sme')">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg);">CẤP 2 • SME / BUSINESS UNIT</span>
+              <h3>🏢 Doanh Nghiệp Nhỏ / Đơn Vị BU</h3>
+              <p>Đơn vị kinh doanh độc lập tự chủ P&L, bắt đầu tách 3 khối: Chuyên môn, Kinh doanh và Vận hành.</p>
+            </div>
+            <div class="scale-specs">
+              <span>👥 <b>Nhân sự:</b> 10 – 49 người</span>
+              <span>💰 <b>Vốn đầu tư:</b> 300tr – 3 tỷ VNĐ</span>
+              <span>📈 <b>Doanh thu:</b> 10 – 50 tỷ/năm</span>
+            </div>
+          </div>
+
+          <div class="scale-card" id="sc-chain" onclick="selectScale('chain')">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg);">CẤP 3 • MID-SIZE / CHAIN</span>
+              <h3>🏬 Doanh Nghiệp Vừa / Chuỗi</h3>
+              <p>Vận hành đa điểm bán/chi nhánh hoặc xưởng sản xuất; cần Trung tâm Dịch vụ Dùng chung (Shared Services).</p>
+            </div>
+            <div class="scale-specs">
+              <span>👥 <b>Nhân sự:</b> 50 – 199 người</span>
+              <span>💰 <b>Vốn đầu tư:</b> 3 – 20 tỷ VNĐ</span>
+              <span>📈 <b>Doanh thu:</b> 50 – 300 tỷ/năm</span>
+            </div>
+          </div>
+
+          <div class="scale-card" id="sc-platform" onclick="selectScale('platform')">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg);">CẤP 4 • ECOSYSTEM PLATFORM</span>
+              <h3>🌐 Nền Tảng Hệ Sinh Thái Đa Bên</h3>
+              <p>Cấu trúc Hub-and-Spoke: Lõi công nghệ & dữ liệu điều phối hàng trăm nhà cung cấp, đại lý hoặc phòng khám.</p>
+            </div>
+            <div class="scale-specs">
+              <span>👥 <b>Mạng lưới:</b> &gt; 100 đối tác/vệ tinh</span>
+              <span>💰 <b>Vốn nền tảng:</b> &gt; 5 tỷ VNĐ</span>
+              <span>📈 <b>Quy mô GMV:</b> &gt; 300 tỷ/năm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIẾN 2: MA TRẬN Ý TƯỞNG THỰC CHIẾN TẠI VIỆT NAM -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">💡 Biến Số 2: Chọn Ý Tưởng Mẫu Thực Chiến Tại Việt Nam (Không Gán Thương Hiệu)</div>
+            <div class="panel-subtitle">8 mô hình kinh doanh tiêu biểu tại thị trường Việt Nam có dòng tiền nhanh, nhu cầu thật và khả năng chuẩn hóa cao:</div>
+          </div>
+        </div>
+
+        <div class="ideas-grid">
+          <div class="idea-card active" id="id-micro_saas" onclick="loadIdea('micro_saas')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">SaaS / Tư vấn số B2B</span>
+                <span class="scale-badge" style="background: var(--tag-emerald-bg); color: var(--tag-emerald-fg); margin:0;">CẤP 1</span>
+              </div>
+              <h4>📊 Công Cụ Chẩn Đoán Rò Rỉ Dòng Tiền & Lãng Phí 15 Phút</h4>
+            </div>
+            <div class="idea-meta">Tự phục vụ 100% • Thu phí mở khóa báo cáo qua VietQR • Biên LN 90%</div>
+          </div>
+
+          <div class="idea-card" id="id-micro_content" onclick="loadIdea('micro_content')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Truyền thông & Thương mại</span>
+                <span class="scale-badge" style="background: var(--tag-emerald-bg); color: var(--tag-emerald-fg); margin:0;">CẤP 1</span>
+              </div>
+              <h4>🎬 Xưởng Sản Xuất Nội Dung Chuyên Gia & Affiliate AI</h4>
+            </div>
+            <div class="idea-meta">Biến 1 giờ ghi âm thành 20 ấn phẩm đa kênh • Thu phí gói tháng</div>
+          </div>
+
+          <div class="idea-card" id="id-sme_clinic" onclick="loadIdea('sme_clinic')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Y tế & Sức khỏe gia đình</span>
+                <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg); margin:0;">CẤP 2</span>
+              </div>
+              <h4>🩺 Trung Tâm Bác Sĩ Gia Đình & Theo Dõi Sức Khỏe Tại Nhà</h4>
+            </div>
+            <div class="idea-meta">Gói thuê bao năm chăm sóc người cao tuổi • Đo chỉ số từ xa</div>
+          </div>
+
+          <div class="idea-card" id="id-sme_academy" onclick="loadIdea('sme_academy')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Giáo dục Quản trị B2B</span>
+                <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg); margin:0;">CẤP 2</span>
+              </div>
+              <h4>🎓 Học Viện Huấn Luyện Quản Trị & Chuyển Giao AI Cho SME</h4>
+            </div>
+            <div class="idea-meta">Đào tạo kèm cặp 90 ngày ra quy trình thật • Hợp đồng B2B giá trị cao</div>
+          </div>
+
+          <div class="idea-card" id="id-sme_agri_d2c" onclick="loadIdea('sme_agri_d2c')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Thực phẩm & Dược liệu Việt</span>
+                <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg); margin:0;">CẤP 2</span>
+              </div>
+              <h4>🌾 Thương Hiệu Dinh Dưỡng Hạt & Thảo Dược Chế Biến Sâu</h4>
+            </div>
+            <div class="idea-meta">Liên kết vùng nguyên liệu • Bán D2C & Quà tặng sức khỏe doanh nghiệp</div>
+          </div>
+
+          <div class="idea-card" id="id-chain_wellness" onclick="loadIdea('chain_wellness')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Chuỗi dịch vụ Dưỡng sinh</span>
+                <span class="scale-badge" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg); margin:0;">CẤP 3</span>
+              </div>
+              <h4>🌿 Chuỗi Trung Tâm Trị Liệu Cổ Vai Gáy & Phục Hồi Tự Nhiên</h4>
+            </div>
+            <div class="idea-meta">Vận hành 5–20 cơ sở • Chuẩn hóa học viện tay nghề & Thẻ thành viên</div>
+          </div>
+
+          <div class="idea-card" id="id-plat_telehealth" onclick="loadIdea('plat_telehealth')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Nền tảng Y tế số IoMT</span>
+                <span class="scale-badge" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg); margin:0;">CẤP 4</span>
+              </div>
+              <h4>🏥 Nền Tảng Kết Nối Thiết Bị Y Tế Tại Nhà & Mạng Lưới Bác Sĩ</h4>
+            </div>
+            <div class="idea-meta">Đồng bộ dữ liệu máy đo tự động • Kết nối Bác sĩ – Điều dưỡng – Hộ dân</div>
+          </div>
+
+          <div class="idea-card" id="id-plat_b2b2c" onclick="loadIdea('plat_b2b2c')">
+            <div>
+              <div class="idea-card-top">
+                <span class="idea-sector">Chuỗi cung ứng 2 đầu</span>
+                <span class="scale-badge" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg); margin:0;">CẤP 4</span>
+              </div>
+              <h4>📦 Mạng Lưới Xúc Tiến Thương Mại Nông Sản Không Ôm Kho</h4>
+            </div>
+            <div class="idea-meta">Gom đơn đặt trước từ cộng đồng cư dân ➔ Đặt lệnh thu hoạch nông trại</div>
+          </div>
+        </div>
+
+        <div class="seed-box">
+          <label>✍️ Mô Tả Chi Tiết Ý Tưởng Của Founder (Có thể sửa trực tiếp theo dự án riêng của anh):</label>
+          <textarea id="seed-idea" rows="3"></textarea>
+          <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+            <button class="btn-cta" onclick="goStep(2)">
+              Tiếp Tục: Sang Bước 2 — Làm Rõ Bộ Câu Hỏi Định Hướng 4 Blocks ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <div id="step-2-view" style="display: none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🧭 Bước 2: Bản Câu Hỏi Định Hướng Làm Rõ 4 Blocks Nền Tảng</div>
+            <div class="panel-subtitle">Đây là 12 tham số đầu vào cốt lõi quyết định "hình hài bộ máy". Khi làm rõ 12 câu này, Founder sẽ không bao giờ xây nhầm tổ chức:</div>
+          </div>
+          <button class="btn-outline" onclick="goStep(1)">⬅ Quay lại Bước 1</button>
+        </div>
+
+        <div class="quad-grid">
+          <!-- BLOCK 1 -->
+          <div class="quad-card q-b1">
+            <div class="quad-head">
+              <span class="quad-title">1. Mô Hình Kinh Doanh (Mỏ Vàng)</span>
+              <span class="scale-badge" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg); margin:0;">VALUE & CASH FLOW</span>
+            </div>
+            <div class="field-group">
+              <label>1.1. Chân dung khách hàng trả tiền & Nỗi đau cấp bách nhất?</label>
+              <span class="field-hint">Ai là người rút ví? Vấn đề nào khiến họ mất ăn mất ngủ ngay lúc này?</span>
+              <input type="text" id="f-q1">
+            </div>
+            <div class="field-group">
+              <label>1.2. Cơ chế thu tiền & Vòng quay dòng tiền?</label>
+              <span class="field-hint">Thu tiền trước (Subscription/Combo), thu theo giao dịch hay công nợ B2B?</span>
+              <input type="text" id="f-q2">
+            </div>
+            <div class="field-group">
+              <label>1.3. Rào cản bảo vệ (Moat) & Tuân thủ 5 Luật tại Việt Nam?</label>
+              <span class="field-hint">Giấy phép ngành nghề, Thuế, NĐ 13/2023 bảo vệ dữ liệu cá nhân, Đạo đức nghề?</span>
+              <input type="text" id="f-q3">
+            </div>
+          </div>
+
+          <!-- BLOCK 2 -->
+          <div class="quad-card q-b2">
+            <div class="quad-head">
+              <span class="quad-title">2. Kế Hoạch Chiến Lược (Cách Đào Vàng)</span>
+              <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg); margin:0;">STRATEGY & FOCUS</span>
+            </div>
+            <div class="field-group">
+              <label>2.1. Đích thực chứng 90 ngày đầu tiên (Cột mốc V1)?</label>
+              <span class="field-hint">Con số cụ thể nào chứng minh mô hình thành công sau 3 tháng đầu?</span>
+              <input type="text" id="f-q4">
+            </div>
+            <div class="field-group">
+              <label>2.2. Kỷ luật Đánh đổi: Việc gì BẮT BUỘC LÀM & Việc gì CẤM LÀM?</label>
+              <span class="field-hint">Chiến lược là chọn việc KHÔNG LÀM để không đốt tiền vô ích.</span>
+              <input type="text" id="f-q5">
+            </div>
+            <div class="field-group">
+              <label>2.3. Kênh tiếp cận khách hàng hạt nhân (Go-To-Market)?</label>
+              <span class="field-hint">Tìm 50-100 khách đầu tiên qua kênh nào để chi phí Marketing thấp nhất?</span>
+              <input type="text" id="f-q6">
+            </div>
+          </div>
+
+          <!-- BLOCK 3 -->
+          <div class="quad-card q-b3">
+            <div class="quad-head">
+              <span class="quad-title">3. Hạ Tầng Tổ Chức & Công Nghệ (Người Đào & AI)</span>
+              <span class="scale-badge" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg); margin:0;">ORG & DIGITALIZATION</span>
+            </div>
+            <div class="field-group">
+              <label>3.1. Năng lực lõi sống còn của tổ chức (Core Capability)?</label>
+              <span class="field-hint">Tổ chức thắng nhờ Chuyên môn sâu, nhờ Chuỗi cung ứng hay nhờ Công nghệ?</span>
+              <input type="text" id="f-q7">
+            </div>
+            <div class="field-group">
+              <label>3.2. Nút thắt Con người (Human Bottlenecks) không thể thay thế?</label>
+              <span class="field-hint">Vị trí nào bắt buộc người thật giữ (Chữ ký pháp lý, duyệt chi, khám bệnh, chốt deal lớn)?</span>
+              <input type="text" id="f-q8">
+            </div>
+            <div class="field-group">
+              <label>3.3. Luồng việc giao cho AI Agents & Phần mềm tự động hóa?</label>
+              <span class="field-hint">Những việc lặp lại nào giao cho Robot/AI làm 24/7 để giảm nhân sự?</span>
+              <input type="text" id="f-q9">
+            </div>
+          </div>
+
+          <!-- BLOCK 4 -->
+          <div class="quad-card q-b4">
+            <div class="quad-head">
+              <span class="quad-title">4. Mô Hình Tài Chính (Bệ Đỡ Kinh Tế)</span>
+              <span class="scale-badge" style="background: var(--tag-emerald-bg); color: var(--tag-emerald-fg); margin:0;">FINANCIAL MODEL</span>
+            </div>
+            <div class="field-group">
+              <label>4.1. Trần ngân sách đầu tư & Quỹ dự phòng sinh tồn (Runway)?</label>
+              <span class="field-hint">Số tiền tối đa được phép chi và số tháng sống sót nếu doanh thu chậm?</span>
+              <input type="text" id="f-q10">
+            </div>
+            <div class="field-group">
+              <label>4.2. Kinh tế đơn vị (CAC, LTV, Biên lợi nhuận gộp, Điểm hòa vốn)?</label>
+              <span class="field-hint">Chi phí có 1 khách vs Lợi nhuận thu được từ 1 khách là bao nhiêu?</span>
+              <input type="text" id="f-q11">
+            </div>
+            <div class="field-group">
+              <label>4.3. Cơ chế chia sẻ lợi ích & Khoán hiệu quả cho đội ngũ?</label>
+              <span class="field-hint">Trả lương cố định tinh gọn + Thưởng theo kết quả nghiệm thu thực tế ra sao?</span>
+              <input type="text" id="f-q12">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <span style="font-size: 13px; color: var(--text-secondary);">💡 <i>Mọi thông số trên sẽ được tổng hợp thành Sơ đồ cây tổ chức, Hạ tầng 5 lớp và Bảng RACI ở Bước 3.</i></span>
+          <button class="btn-cta emerald" onclick="renderBlueprintV1()">
+            🚀 ACTION: XUẤT BẢN BÁO CÁO KIẾN TRÚC TỔ CHỨC V1 ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <div id="step-3-view" style="display: none;">
+      <!-- BANNER BÁO CÁO -->
+      <div class="report-header-banner">
+        <div>
+          <span class="scale-badge" id="rep-scale-tag" style="background: rgba(255,255,255,0.18); color: #FFF;">...</span>
+          <h2 id="rep-title">BẢN THIẾT KẾ ĐỊNH HƯỚNG MÔ HÌNH TỔ CHỨC V1</h2>
+          <p id="rep-idea-summary">...</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-outline" style="background: rgba(255,255,255,0.1); color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="copyReportMD()">📋 Copy Markdown</button>
+          <button class="btn-outline" style="background: #10B981; color: #FFF; border-color: #10B981;" onclick="downloadReportMD()">💾 Tải Báo Cáo (.md)</button>
+        </div>
+      </div>
+
+      <!-- SECTION 1: TẦNG 1 — 4 BLOCKS CHIẾN LƯỢC -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🏛️ TẦNG 1: ĐỊNH HƯỚNG CHIẾN LƯỢC & BẢN THIẾT KẾ DOANH CHỦ (4 BLOCKS)</div>
+            <div class="panel-subtitle">Giải nghĩa: Tầng 1 trả lời câu hỏi "Tại sao tổ chức tồn tại, kiếm tiền ở đâu và ranh giới sống còn là gì?" trước khi tuyển người.</div>
+          </div>
+        </div>
+
+        <div class="scale-grid" style="margin-bottom: 0;">
+          <div class="scale-card" style="cursor: default; border-top: 4px solid var(--amber);">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg);">BLOCK 1 • MỎ VÀNG</span>
+              <h3>Mô Hình Kinh Doanh</h3>
+              <p id="rep-b1-cust">...</p>
+            </div>
+            <div class="scale-specs">
+              <span>💵 <b>Dòng tiền:</b> <span id="rep-b1-cash">...</span></span>
+              <span>🛡️ <b>Pháp lý & Moat:</b> <span id="rep-b1-moat">...</span></span>
+            </div>
+          </div>
+
+          <div class="scale-card" style="cursor: default; border-top: 4px solid var(--primary);">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg);">BLOCK 2 • CÁCH ĐÀO</span>
+              <h3>Kế Hoạch Chiến Lược V1</h3>
+              <p id="rep-b2-goal">...</p>
+            </div>
+            <div class="scale-specs">
+              <span>✅ <b>Tập trung:</b> <span id="rep-b2-do">...</span></span>
+              <span>🚫 <b>Từ bỏ:</b> <span id="rep-b2-dont">...</span></span>
+            </div>
+          </div>
+
+          <div class="scale-card" style="cursor: default; border-top: 4px solid var(--purple);">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg);">BLOCK 3 • NGƯỜI ĐÀO</span>
+              <h3>Năng Lực Lõi & Công Nghệ</h3>
+              <p id="rep-b3-cap">...</p>
+            </div>
+            <div class="scale-specs">
+              <span>👤 <b>Nút Human:</b> <span id="rep-b3-human">...</span></span>
+              <span>🤖 <b>Đòn bẩy AI:</b> <span id="rep-b3-ai">...</span></span>
+            </div>
+          </div>
+
+          <div class="scale-card" style="cursor: default; border-top: 4px solid var(--emerald);">
+            <div>
+              <span class="scale-badge" style="background: var(--tag-emerald-bg); color: var(--tag-emerald-fg);">BLOCK 4 • BỆ ĐỠ VỐN</span>
+              <h3>Mô Hình Tài Chính</h3>
+              <p id="rep-b4-unit">...</p>
+            </div>
+            <div class="scale-specs">
+              <span>🏦 <b>Ngân sách:</b> <span id="rep-b4-runway">...</span></span>
+              <span>🤝 <b>Đãi ngộ:</b> <span id="rep-b4-inc">...</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: SƠ ĐỒ CÂY TỔ CHỨC TRỰC QUAN (VISUAL ORG TREE) -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🌳 TẦNG 2: SƠ ĐỒ CƠ CẤU TỔ CHỨC TRỰC QUAN & PHÂN VAI HUMAN × AI (T1 ORG & T2 ROLE)</div>
+            <div class="panel-subtitle" id="rep-org-subtitle">Giải nghĩa: Sơ đồ phân cấp chỉ rõ các khối chức năng, vị trí nào bắt buộc Con người nắm giữ (Nút thắt trách nhiệm) và vị trí nào giao cho Nhân sự số AI.</div>
+          </div>
+        </div>
+
+        <div class="org-tree-wrapper">
+          <!-- CEO / ROOT NODE -->
+          <div class="tree-level-1">
+            <div class="tree-ceo-node">
+              <span class="scale-badge" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg); margin: 0 auto 6px;">TẦNG LÃNH ĐẠO TỐI CAO (L1 • 100% HUMAN)</span>
+              <div style="font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--text-title);" id="tree-root-title">CHỦ THỂ QUYỀN / FOUNDER (ONG CHÚA)</div>
+              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="tree-root-desc">Giữ Đích chiến lược • Phê duyệt ngân sách & Pháp lý • Chốt đối tác trọng yếu</div>
+            </div>
+          </div>
+
+          <div class="tree-connector-bar"></div>
+
+          <!-- 4 BRANCHES -->
+          <div class="tree-branches" id="tree-branches-container">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: HẠ TẦNG QUẢN TRỊ ĐỒNG TÂM 5 LỚP (MANAGEMENT INFRASTRUCTURE) -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🛡️ TẦNG 3A: HẠ TẦNG QUẢN TRỊ ĐỒNG TÂM 5 LỚP & SỐ HÓA (MANAGEMENT INFRASTRUCTURE)</div>
+            <div class="panel-subtitle">Giải nghĩa nguyên lý "Củ hành đồng tâm": Con người (HR) đặt ở tâm điểm nhưng không bao giờ làm việc trần trụi mà được bảo vệ và dẫn dắt bởi 4 lớp giáp quản trị + 1 lớp vỏ Số hóa/AI.</div>
+          </div>
+        </div>
+
+        <div class="infra-layout">
+          <!-- CONCENTRIC VISUAL -->
+          <div class="concentric-rings">
+            <span class="ring-label-top">⚡ VỎ BỌC GIA TỐC: DIGITALIZATION & AI AGENTS (TỰ ĐỘNG HÓA DỮ LIỆU)</span>
+            <div class="ring-box ring-1">
+              <div class="ring-title">LỚP 4: GIÁ TRỊ CỐT LÕI – TẦM NHÌN – VĂN HÓA 5 LUẬT</div>
+              <div class="ring-sub">Hiến pháp tinh thần giúp tổ chức đồng tâm, không làm ăn gian dối</div>
+              <div class="ring-box ring-2">
+                <div class="ring-title">LỚP 3: CƠ CẤU TỔ CHỨC & PHÂN QUYỀN (ORG STRUCTURE)</div>
+                <div class="ring-sub">Ranh giới phòng ban rõ ràng, đúng người đúng việc, không chồng chéo</div>
+                <div class="ring-box ring-3">
+                  <div class="ring-title">LỚP 2: HỆ THỐNG BÁO CÁO & CHÍNH SÁCH (REPORTING & POLICIES)</div>
+                  <div class="ring-sub">Dashboard số liệu thật mỗi ngày & Cơ chế thưởng phạt minh bạch</div>
+                  <div class="ring-box ring-4">
+                    <div class="ring-title">LỚP 1: QUY TRÌNH THAO TÁC CHUẨN (OPERATIONAL PROCEDURES / SOP)</div>
+                    <div class="ring-sub">Cẩm nang từng bước giúp nhân viên mới làm chuẩn ngay như người cũ</div>
+                    <div class="ring-core">
+                      🎯 TÂM ĐIỂM: NHÂN SỰ THỰC THI (HR CORE)<br/>
+                      <span style="font-size: 11.5px; font-weight: 500; opacity: 0.92;">Tròn vai • Tròn chức năng • Tạo kết quả thực chứng</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXPLANATION GLOSSARY -->
+          <div class="infra-glossary">
+            <div class="glossary-item" style="border-left-color: var(--rose);">
+              <h4>1. Vì sao HR (Con người) nằm ở lõi trong cùng?</h4>
+              <p>Con người là chủ thể tạo ra sự thấu cảm và phán đoán chuyên môn. Nhưng nếu thiếu 4 lớp bọc bên ngoài, nhân sự sẽ làm việc theo bản năng, người giỏi đi là sụp đổ.</p>
+            </div>
+            <div class="glossary-item" style="border-left-color: var(--amber);">
+              <h4>2. Lớp Quy trình (SOP) & Báo cáo (Policies) giải quyết gì?</h4>
+              <p>Chuyển tri thức từ "trong đầu cá nhân" thành "tài sản của tổ chức". Nhân viên chỉ cần bám đúng SOP là đạt 85% chất lượng mà không cần cấp trên kèm cặp từng giờ.</p>
+            </div>
+            <div class="glossary-item" style="border-left-color: var(--cyan);">
+              <h4>3. Lớp vỏ Digitalization (Số hóa & AI) đóng vai trò gì?</h4>
+              <p id="rep-infra-ai-explain">Thay vì nhân sự phải tự gõ báo cáo thủ công, hệ thống phần mềm và AI tự động ghi nhận dữ liệu từ quy trình để xuất Dashboard thời gian thực cho Founder.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: CHUỖI GIÁ TRỊ 5 BƯỚC & BẢN ĐỒ DỮ LIỆU (T5 PROC & T6 DATA) -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">⚙️ TẦNG 3B: CHUỖI GIÁ TRỊ NGHIỆP VỤ (T5 PROC) & DỮ LIỆU HỢP NHẤT (T6 DATA)</div>
+            <div class="panel-subtitle">Giải nghĩa: Mọi hoạt động trong công ty phải nối thành một dòng chảy không đứt đoạn từ lúc tiếp cận khách hàng đến lúc tiền về két và khách tái mua.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-grid" id="rep-pipeline-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- SECTION 5: TẦNG 4 — MA TRẬN RACI, OKRs 90 NGÀY & VÒNG LẶP KAIZEN -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🎯 TẦNG 4: MA TRẬN TRÁCH NHIỆM RACI, OKRs 90 NGÀY & DÂY DỪNG CHUYỀN ANDON</div>
+            <div class="panel-subtitle">Giải nghĩa: RACI định rõ "Ai chịu trách nhiệm cuối cùng (A)" và "Ai trực tiếp làm (R)". Bất kiêm nhiệm: Người làm không tự nghiệm thu sản phẩm của chính mình.</div>
+          </div>
+        </div>
+
+        <table class="data-table" id="rep-raci-table">
+          <thead>
+            <tr>
+              <th>Mạch Công Việc Cốt Lõi</th>
+              <th>Chịu Trách Nhiệm Cuối (A - Accountable)</th>
+              <th>Thực Thi Trực Tiếp (R - Responsible)</th>
+              <th>Công Cụ / AI Hỗ Trợ (T7 SYS)</th>
+              <th>Chỉ Số Đo Lường (KPI / OKR V1)</th>
+            </tr>
+          </thead>
+          <tbody id="rep-raci-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+
+        <div style="margin-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+          <button class="btn-outline" onclick="goStep(2)">⬅ Quay lại chỉnh sửa 4 Blocks</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn-outline" onclick="copyReportMD()">📋 1-Click Copy Toàn Bộ Báo Cáo</button>
+            <button class="btn-cta emerald" onclick="downloadReportMD()">💾 Tải File Báo Cáo Markdown (.md)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Đã sao chép toàn bộ Báo cáo Kiến trúc Tổ chức V1 vào bộ nhớ tạm!</div>
+
+  <script>
+    // THEME SWITCHER
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('theme-icon').innerText = theme === 'dark' ? '☀️' : '🌙';
+      document.getElementById('theme-label').innerText = theme === 'dark' ? 'Giao diện Sáng' : 'Giao diện Tối';
+      localStorage.setItem('bmaa_ea_v3_theme', theme);
+    }
+
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      setTheme(cur === 'light' ? 'dark' : 'light');
+    }
+
+    setTheme(localStorage.getItem('bmaa_ea_v3_theme') || 'light');
+
+    // STATE
+    let selectedScale = 'micro';
+    let selectedIdeaKey = 'micro_saas';
+
+    // VIETNAMESE SCALES DEFINITION
+    const scaleConfigs = {
+      micro: {
+        name: 'CẤP 1: TIỂU ĐỘI TỰ TRỊ / HỘ KINH DOANH SỐ (1–9 NHÂN SỰ)',
+        rootTitle: 'FOUNDER / CHỦ THỂ SẢN PHẨM (PRODUCT OWNER)',
+        rootDesc: 'Giữ Đích chiến lược • Kiểm duyệt chất lượng cổng cuối • Quản trị dòng tiền mặt',
+        branches: [
+          {
+            cls: 'b-core',
+            title: '🛠️ 1. Động Cơ Sản Phẩm & Chuyên Môn',
+            explain: 'Đóng gói giải pháp/sản phẩm lõi chuẩn hóa để khách tự phục vụ nhanh nhất.',
+            roles: [
+              { name: 'Chuyên gia Nội dung / Giải pháp (1 Human)', desc: 'Thiết kế bộ khung chuyên môn, công thức gốc.' },
+              { name: 'AI Production Agent (Robot)', desc: 'Tự động sinh báo cáo, tài liệu, ấn phẩm 24/7.' }
+            ]
+          },
+          {
+            cls: 'b-growth',
+            title: '🚀 2. Kênh Thu Hút & Chuyển Đổi Số',
+            explain: 'Biến người xem thành khách trả tiền qua phễu tự động không cần đội sale đông.',
+            roles: [
+              { name: 'Growth Operator (1 Human kiêm nhiệm)', desc: 'Phân phối nội dung thực chứng lên cộng đồng.' },
+              { name: 'AI Conversion Bot', desc: 'Tư vấn kịch bản mẫu, tạo mã VietQR thu tiền tự động.' }
+            ]
+          },
+          {
+            cls: 'b-ops',
+            title: '💬 3. Bàn Giao & Cộng Đồng Khách Hàng',
+            explain: 'Đảm bảo khách hàng nhận giá trị ngay trong 15 phút đầu tiên và giới thiệu bạn bè.',
+            roles: [
+              { name: 'Onboarding Coordinator', desc: 'Hỗ trợ khách VIP & xử lý tình huống ngoại lệ.' },
+              { name: 'Zalo / Email Auto-Flow', desc: 'Tự động gửi sản phẩm, hướng dẫn sử dụng & xin đánh giá.' }
+            ]
+          },
+          {
+            cls: 'b-tech',
+            title: '🛡️ 4. Rào Chắn Tài Chính & Pháp Chế',
+            explain: 'Kiểm soát chi phí dưới trần, tuân thủ thuế hộ KD/DN siêu nhỏ và bảo mật dữ liệu.',
+            roles: [
+              { name: 'Kế toán Thuế Dịch vụ (Part-time)', desc: 'Kê khai thuế định kỳ, xuất hóa đơn điện tử.' },
+              { name: 'Script Canh Trần Dòng Tiền', desc: 'Tự động cảnh báo nếu chi phí vượt định mức.' }
+            ]
+          }
+        ],
+        streams: [
+          { num: 'BƯỚC 01', title: 'Thu Hút Tự Nhiên', desc: 'Khách thấy bài viết/công cụ hữu ích trên mạng xã hội hoặc qua lời giới thiệu.', data: 'Traffic & Source ID' },
+          { num: 'BƯỚC 02', title: 'Trải Nghiệm Nhanh', desc: 'Khách dùng thử bản miễn phí hoặc xem mẫu thực chứng trong 3–5 phút.', data: 'Lead Diagnostic Log' },
+          { num: 'BƯỚC 03', title: 'Chốt & Quét VietQR', desc: 'Thanh toán chuyển khoản tức thì, không qua trung gian phức tạp.', data: 'Webhook Payment' },
+          { num: 'BƯỚC 04', title: 'Bàn Giao Tự Động', desc: 'Hệ thống mở khóa tài nguyên / gửi kết quả ngay lập tức 24/7.', data: 'Fulfillment Record' },
+          { num: 'BƯỚC 05', title: 'Lan Tỏa 1 Tầng', desc: 'Khách hài lòng chia sẻ link giới thiệu nhận ưu đãi hoặc mua gói nâng cao.', data: 'Referral & LTV' }
+        ]
+      },
+      sme: {
+        name: 'CẤP 2: DOANH NGHIỆP NHỎ / ĐƠN VỊ KINH DOANH ĐỘC LẬP BU (10–49 NHÂN SỰ)',
+        rootTitle: 'GIÁM ĐỐC ĐƠN VỊ KINH DOANH (CEO / BU DIRECTOR)',
+        rootDesc: 'Chịu trách nhiệm P&L (Lãi/Lỗ) toàn diện • Duyệt ngân sách • Giữ văn hóa & chuẩn mực chất lượng',
+        branches: [
+          {
+            cls: 'b-core',
+            title: '🩺 1. Khối Chuyên Môn & Sản Phẩm',
+            explain: 'Trực tiếp tạo ra sản phẩm/dịch vụ chất lượng cao đúng cam kết với khách hàng.',
+            roles: [
+              { name: 'Trưởng Khối Chuyên Môn (Head of Delivery)', desc: 'Kiểm soát chất lượng, đào tạo tay nghề đội ngũ.' },
+              { name: 'Đội ngũ Chuyên viên / Bác sĩ / Giảng viên', desc: 'Thực thi nghiệp vụ theo đúng SOP chuẩn.' },
+              { name: 'Trợ lý AI Chuyên môn', desc: 'Tóm tắt hồ sơ khách, gợi ý phác đồ/giải pháp nháp.' }
+            ]
+          },
+          {
+            cls: 'b-growth',
+            title: '📈 2. Khối Kinh Doanh & Marketing',
+            explain: 'Tạo nguồn khách hàng đều đặn và tư vấn chốt hợp đồng mang dòng tiền về.',
+            roles: [
+              { name: 'Trưởng Phòng Kinh Doanh (Sales Lead)', desc: 'Quản lý tỷ lệ chuyển đổi, kèm cặp tư vấn viên.' },
+              { name: 'Nhóm Content & Cộng đồng (2–3 người)', desc: 'Xây dựng nội dung giáo dục khách hàng & tổ chức sự kiện.' },
+              { name: 'AI CRM & Nhắc Lịch Hẹn', desc: 'Phân loại Lead nóng/ấm, tự động nhắc lịch chăm sóc.' }
+            ]
+          },
+          {
+            cls: 'b-ops',
+            title: '⚙️ 3. Khối Vận Hành & Chăm Sóc KH',
+            explain: 'Điều phối lịch trình, hậu cần, kho vận và giữ chân khách hàng tái mua.',
+            roles: [
+              { name: 'Quản lý Vận hành (Ops Manager)', desc: 'Điều phối quy trình liên phòng ban, xử lý sự cố Andon.' },
+              { name: 'Chuyên viên CSKH (Customer Success)', desc: 'Theo dõi sát tiến độ sử dụng và độ hài lòng NPS.' }
+            ]
+          },
+          {
+            cls: 'b-tech',
+            title: '💰 4. Khối Tài Chính – Kế Toán – Hành Chính',
+            explain: 'Quản trị dòng tiền, công nợ, lương thưởng KPI và tuân thủ pháp luật.',
+            roles: [
+              { name: 'Kế toán Tổng hợp / Kiểm soát Nội bộ', desc: 'Đối soát thu chi hàng ngày, quản lý hóa đơn & hợp đồng.' },
+              { name: 'Hệ thống Báo cáo BI / ERP Tinh gọn', desc: 'Tự động tổng hợp P&L và cảnh báo công nợ quá hạn.' }
+            ]
+          }
+        ],
+        streams: [
+          { num: 'BƯỚC 01', title: 'Tạo Nguồn Khách (Lead Gen)', desc: 'Thu hút khách qua hội thảo, nội dung chuyên gia và đối tác giới thiệu.', data: 'CRM Lead Profile' },
+          { num: 'BƯỚC 02', title: 'Chẩn Đoán & Tư Vấn', desc: 'Khảo sát nhu cầu thực tế, thiết kế gói giải pháp phù hợp.', data: 'Proposal & Quote' },
+          { num: 'BƯỚC 03', title: 'Ký Hợp Đồng & Thu Tiền', desc: 'Chốt gói dịch vụ/sản phẩm, thu tiền tạm ứng hoặc trọn gói.', data: 'Contract & Cash-in' },
+          { num: 'BƯỚC 04', title: 'Thực Thi Chuẩn SOP', desc: 'Cung ứng dịch vụ/giao hàng qua 4 cổng kiểm soát chất lượng.', data: 'Service Acceptance' },
+          { num: 'BƯỚC 05', title: 'Chăm Sóc & Tái Ký', desc: 'Đo lường hiệu quả định kỳ, gia hạn gói năm và khai thác lời giới thiệu.', data: 'Retention & NPS' }
+        ]
+      },
+      chain: {
+        name: 'CẤP 3: DOANH NGHIỆP VỪA / CHUỖI ĐA ĐIỂM BÁN (50–199 NHÂN SỰ)',
+        rootTitle: 'HỘI ĐỒNG QUẢN TRỊ & TỔNG GIÁM ĐỐC (CEO CHUỖI)',
+        rootDesc: 'Quy hoạch mạng lưới điểm bán • Phân bổ vốn đầu tư • Kiểm soát chuẩn mực thương hiệu toàn chuỗi',
+        branches: [
+          {
+            cls: 'b-core',
+            title: '🏫 1. Trung Tâm R&D & Học Viện Đào Tạo Nội Bộ',
+            explain: 'Chuẩn hóa công thức sản phẩm và đào tạo nhân sự mới để nhân bản điểm bán không lệch chất lượng.',
+            roles: [
+              { name: 'Giám đốc Chuyên môn / R&D', desc: 'Thiết kế quy trình dịch vụ chuẩn và kiểm định chất lượng.' },
+              { name: 'Học viện Đào tạo Tay nghề', desc: 'Sát hạch cấp chứng chỉ nội bộ trước khi đứng điểm bán.' }
+            ]
+          },
+          {
+            cls: 'b-growth',
+            title: '🏬 2. Khối Vận Hành Hệ Thống Cửa Hàng / Chi Nhánh',
+            explain: 'Quản lý doanh thu, công suất lấp đầy và trải nghiệm khách hàng tại từng cơ sở.',
+            roles: [
+              { name: 'Giám đốc Vùng / Khu vực (Area Manager)', desc: 'Giám sát 5–10 cơ sở, chịu trách nhiệm P&L khu vực.' },
+              { name: 'Cửa hàng trưởng (Store Manager)', desc: 'Quản lý nhân sự tại chỗ, ca kíp và chăm sóc khách tại điểm.' }
+            ]
+          },
+          {
+            cls: 'b-ops',
+            title: '🚚 3. Khối Chuỗi Cung Ứng & Marketing Trung Tâm',
+            explain: 'Mua sắm tập trung giá tốt, điều phối kho vận và chạy chiến dịch thương hiệu toàn chuỗi.',
+            roles: [
+              { name: 'Trưởng phòng Cung ứng & Kho vận', desc: 'Kiểm soát định mức nguyên vật liệu, chống thất thoát.' },
+              { name: 'Phòng Marketing Trung tâm', desc: 'Quản trị thương hiệu, thẻ thành viên Loyalty & CRM toàn hệ thống.' }
+            ]
+          },
+          {
+            cls: 'b-tech',
+            title: '🏛️ 4. Trung Tâm Dịch Vụ Dùng Chung (Shared Services)',
+            explain: 'Nền tảng Tài chính, Nhân sự, Pháp chế và Công nghệ phục vụ chung cho mọi chi nhánh.',
+            roles: [
+              { name: 'Giám đốc Tài chính (CFO) & Kiểm toán nội bộ', desc: 'Kiểm soát dòng tiền từng điểm bán, thẩm định mở điểm mới.' },
+              { name: 'Hệ thống POS – ERP – AI Camera / QA', desc: 'Đồng bộ doanh số thời gian thực, phát hiện bất thường.' }
+            ]
+          }
+        ],
+        streams: [
+          { num: 'BƯỚC 01', title: 'Định Chuẩn & Đào Tạo', desc: 'Đóng gói mô hình điểm bán mẫu và đào tạo đội ngũ đạt chuẩn 100%.', data: 'Store Playbook' },
+          { num: 'BƯỚC 02', title: 'Cung Ứng Tập Trung', desc: 'Phân phối nguyên liệu/sản phẩm từ kho tổng xuống các điểm bán.', data: 'Inventory ERP' },
+          { num: 'BƯỚC 03', title: 'Thu Hút & Đặt Lịch O2O', desc: 'Khách đặt lịch/mua hàng trên App/Zalo OA và đến điểm bán gần nhất.', data: 'O2O Booking ID' },
+          { num: 'BƯỚC 04', title: 'Phục Vụ Đồng Nhất', desc: 'Cơ sở thực hiện dịch vụ đúng quy trình, ghi nhận lên POS tức thì.', data: 'POS Bill & Rating' },
+          { num: 'BƯỚC 05', title: 'Thẻ Thành Viên & Nhân Bản', desc: 'Khách tích điểm dùng toàn chuỗi; Đánh giá P&L để mở điểm tiếp theo.', data: 'Chain P&L & LTV' }
+        ]
+      },
+      platform: {
+        name: 'CẤP 4: NỀN TẢNG HỆ SINH THÁI ĐA BÊN (ECOSYSTEM PLATFORM)',
+        rootTitle: 'BAN ĐIỀU PHỐI HỆ SINH THÁI (PLATFORM GOVERNANCE BOARD)',
+        rootDesc: 'Thiết lập Luật chơi 5 Luật • Điều phối cơ chế chia sẻ lợi ích • Quản trị rủi ro toàn mạng lưới',
+        branches: [
+          {
+            cls: 'b-core',
+            title: '🤝 1. Khối Phát Triển Nguồn Cung (Supply Network)',
+            explain: 'Tuyển chọn, thẩm định và hỗ trợ mạng lưới đối tác cung ứng (Bác sĩ, Nông trại, Nhà máy, Đại lý).',
+            roles: [
+              { name: 'Giám đốc Mạng lưới Đối tác (Partner Director)', desc: 'Xây dựng tiêu chuẩn gia nhập và kiểm soát SLA đối tác.' },
+              { name: 'Hội đồng Thẩm định Chất lượng', desc: 'Kiểm định năng lực chuyên môn/nguồn gốc hàng hóa đầu vào.' }
+            ]
+          },
+          {
+            cls: 'b-growth',
+            title: '🌐 2. Khối Phát Triển Người Dùng & Cộng Đồng (Demand)',
+            explain: 'Mở rộng tệp khách hàng cuối và các trưởng điểm cộng đồng trên toàn quốc.',
+            roles: [
+              { name: 'Giám đốc Tăng trưởng Hệ sinh thái', desc: 'Thiết kế vòng lặp tăng trưởng (Flywheel) và mạng lưới cộng đồng.' },
+              { name: 'AI Marketing & Personalization', desc: 'Gợi ý dịch vụ/sản phẩm cá nhân hóa theo hồ sơ người dùng.' }
+            ]
+          },
+          {
+            cls: 'b-ops',
+            title: '⚡ 3. Khối Điều Phối Khớp Lệnh & Đảm Bảo Chất Lượng',
+            explain: 'Vận hành luồng khớp Cung – Cầu mượt mà, xử lý khiếu nại và bảo vệ uy tín nền tảng.',
+            roles: [
+              { name: 'Trung tâm Điều vận & Hỗ trợ (Command Center)', desc: 'Giám sát các giao dịch đang diễn ra, xử lý sự cố cấp độ 2–3.' },
+              { name: 'Smart Routing & Dispatch AI', desc: 'Tự động ghép nối nhu cầu khách hàng với đối tác gần và phù hợp nhất.' }
+            ]
+          },
+          {
+            cls: 'b-tech',
+            title: '🧠 4. Khối Hạ Tầng Công Nghệ, Dữ Liệu & Thanh Toán',
+            explain: 'Trái tim công nghệ: Bể dữ liệu hợp nhất (Master Data), Ví thanh toán đối soát và AI Core.',
+            roles: [
+              { name: 'Giám đốc Công nghệ & Dữ liệu (CTO / CDO)', desc: 'Bảo mật kiến trúc, tuân thủ NĐ 13/2023 và phát triển API.' },
+              { name: 'Hệ thống Thanh toán & Chia doanh thu Tự động', desc: 'Tự động tách dòng tiền cho Đối tác – Cộng tác viên – Nền tảng.' }
+            ]
+          }
+        ],
+        streams: [
+          { num: 'TRẠM 01', title: 'Onboard & Xác Thực Cung', desc: 'Thẩm định hồ sơ đối tác cung ứng và kết nối lên nền tảng số.', data: 'Verified Partner ID' },
+          { num: 'TRẠM 02', title: 'Khởi Tạo Nhu Cầu Cầu', desc: 'Người dùng hoặc thiết bị đầu cuối gửi yêu cầu/dữ liệu lên hệ thống.', data: 'Demand Event Stream' },
+          { num: 'TRẠM 03', title: 'Khớp Lệnh Thông Minh', desc: 'Hệ thống điều phối đối tác phù hợp nhất thực hiện đơn hàng/dịch vụ.', data: 'Smart Match Contract' },
+          { num: 'TRẠM 04', title: 'Thực Thi & Nghiệm Thu Số', desc: 'Đối tác hoàn thành việc, khách hàng xác nhận kết quả trên ứng dụng.', data: 'Proof of Delivery' },
+          { num: 'TRẠM 05', title: 'Đối Soát & Hiệu Ứng Mạng', desc: 'Tự động phân chia doanh thu minh bạch; dữ liệu làm giàu cho vòng sau.', data: 'Split Ledger & Flywheel' }
+        ]
+      }
+    };
+
+    // 8 VIETNAMESE REAL-WORLD IDEAS
+    const ideaPresets = {
+      micro_saas: {
+        scale: 'micro',
+        idea: "Vi dịch vụ (Micro-Service) Công cụ Web tự phục vụ giúp chủ doanh nghiệp nhỏ và hộ kinh doanh tại Việt Nam tự chẩn đoán 3 điểm rò rỉ dòng tiền và lãng phí vận hành trong 15 phút.",
+        q1: "Chủ cửa hàng, hộ kinh doanh, giám đốc DN nhỏ (5–30 người) bán được hàng nhưng cuối tháng hụt tiền mặt, không đủ ngân sách thuê tư vấn lớn.",
+        q2: "Làm bài trắc nghiệm 15 câu miễn phí nhận điểm tổng quan ➔ Quét mã VietQR 499.000đ mở khóa ngay Báo cáo phân tích chi tiết & Bộ biểu mẫu kiểm soát dòng tiền.",
+        q3: "Tuân thủ Nghị định 13/2023/NĐ-CP bảo mật dữ liệu; Công thức tài chính chuẩn mực, dễ hiểu bằng lời đời thường, áp dụng được ngay trong 24h.",
+        q4: "Đạt 1.500 lượt chẩn đoán miễn phí và 220 đơn hàng trả phí (~110 triệu VNĐ doanh thu) tự động hoàn toàn trong 90 ngày đầu.",
+        q5: "BẮT BUỘC LÀM: Trải nghiệm trên điện thoại mượt mà trong 15 phút, kết quả sắc bén; CẤM LÀM: Nhận tư vấn 1:1 thủ công tốn thời gian cho gói giá nhỏ.",
+        q6: "Chia sẻ bài phân tích tình huống rò rỉ tiền thực tế trong cộng đồng chủ doanh nghiệp, kèm link tự kiểm tra miễn phí.",
+        q7: "Thuật toán chấm điểm chẩn đoán chính xác theo đặc thù ngành nghề Việt Nam + Giao diện Web chuyển đổi thanh toán tức thì.",
+        q8: "Founder (Product Owner) trực tiếp biên soạn bộ tiêu chí chẩn đoán gốc, duyệt thuật toán và kiểm tra định kỳ độ chính xác.",
+        q9: "100% khâu chấm điểm, xuất báo cáo PDF/Web cá nhân hóa, xác nhận thanh toán VietQR và gửi email/Zalo hướng dẫn đều do hệ thống tự động chạy.",
+        q10: "Ngân sách khởi tạo < 15 triệu VNĐ; Chi phí duy trì server/tên miền < 1 triệu/tháng; Runway sống khỏe 12 tháng không áp lực.",
+        q11: "Chi phí thu hút 1 khách (CAC) < 80k; Giá bán 499k; Biên lợi nhuận gộp > 85%; Hòa vốn từ đơn hàng thứ 30.",
+        q12: "70% lợi nhuận tích lũy vào quỹ đầu tư sản phẩm mới; 30% thưởng cho cộng tác viên và đối tác giới thiệu kênh (Affiliate 1 tầng)."
+      },
+      micro_content: {
+        scale: 'micro',
+        idea: "Tiểu đội Xưởng sản xuất & Chuyển hóa Nội dung Chuyên gia đa kênh bằng AI: Biến 1 buổi ghi âm chia sẻ 60 phút của Bác sĩ / Luật sư / CEO thành 20 ấn phẩm chuẩn mực mỗi tháng.",
+        q1: "Các chuyên gia giỏi nghề (Bác sĩ, Cố vấn, Chủ doanh nghiệp) muốn xây dựng thương hiệu cá nhân uy tín để hút khách nhưng không có thời gian viết bài.",
+        q2: "Thuê bao trọn gói hàng tháng (Retainer 12 – 18 triệu/tháng/khách hàng), thanh toán đầu mỗi tháng hoặc theo quý.",
+        q3: "Đảm bảo chuẩn mực ngôn từ đời thường, trung thực, không giật tít câu view sai sự thật hay vi phạm quy định quảng cáo y tế/pháp lý.",
+        q4: "Ký hợp đồng thuê bao định kỳ với 10 chuyên gia (Doanh thu định kỳ MRR đạt 150 triệu/tháng) chỉ với tiểu đội 3 người + AI.",
+        q5: "BẮT BUỘC LÀM: Giữ đúng chất giọng và chiều sâu trí tuệ của chuyên gia; CẤM LÀM: Nhận quay dựng TVC quảng cáo phức tạp ngoài hiện trường.",
+        q6: "Tặng miễn phí 1 gói 'Chuyển hóa thử nghiệm 3 bài viết + 2 video ngắn' trích xuất từ video sẵn có của chuyên gia mục tiêu.",
+        q7: "Quy trình phỏng vấn khơi gợi tri thức 60 phút/tháng + Hệ thống AI Agent bóc băng, biên tập theo bộ khuôn mẫu chuyển đổi cao.",
+        q8: "Biên tập viên trưởng (Human Editor) rà soát câu chữ cuối cùng và Khách hàng phê duyệt trước khi đăng tải.",
+        q9: "AI tự động gỡ băng âm thanh tiếng Việt, lọc ý chính, viết nháp 5 định dạng bài đăng, tạo phụ đề video và lên lịch xuất bản.",
+        q10: "Vốn ban đầu 30 triệu VNĐ; Dòng tiền dương ngay từ tháng thứ nhất nhờ thu tiền trước khi sản xuất.",
+        q11: "Thời gian nhân sự xử lý 1 khách hàng < 8 giờ/tháng; Biên lợi nhuận ròng > 65%; Điểm hòa vốn: 3 khách hàng.",
+        q12: "Lương cơ bản tinh gọn + Thưởng khoán trực tiếp 20% doanh thu trên mỗi tài khoản khách hàng gia hạn thành công."
+      },
+      sme_clinic: {
+        scale: 'sme',
+        idea: "Đơn vị Kinh doanh (BU) Trung tâm Bác sĩ Gia đình & Quản lý Sức khỏe Chủ động tại nhà cho người cao tuổi và người có bệnh nền mạn tính tại các đô thị lớn.",
+        q1: "Con cái thành đạt bận rộn có cha mẹ già mắc bệnh tim mạch, huyết áp, tiểu đường sợ cảnh chờ đợi mệt mỏi ở bệnh viện tuyến trên.",
+        q2: "Bán Gói Thẻ Bác sĩ Gia đình theo năm (12 – 24 triệu/năm/hộ) + Doanh thu dịch vụ xét nghiệm lấy mẫu tại nhà và thiết bị đo y tế.",
+        q3: "Đầy đủ giấy phép Phòng khám Bác sĩ Gia đình theo Luật Khám chữa bệnh; Bảo mật hồ sơ bệnh án; Tư vấn đúng y đức, không lạm dụng xét nghiệm.",
+        q4: "Phục vụ 120 hộ gia đình đăng ký gói năm trong 90 ngày đầu tiên; Tỷ lệ hài lòng và tuân thủ đo chỉ số sức khỏe hàng tuần đạt > 90%.",
+        q5: "BẮT BUỘC LÀM: Bác sĩ phản hồi cảnh báo trong 15 phút, thăm khám tận tâm; CẤM LÀM: Đầu tư máy móc chẩn đoán hình ảnh đắt tiền gây chôn vốn.",
+        q6: "Hợp tác với Ban quản trị các khu chung cư cao cấp tổ chức ngày hội tầm soát sức khỏe người cao tuổi và giới thiệu truyền miệng.",
+        q7: "Đội ngũ Bác sĩ Nội khoa giàu kinh nghiệm, thấu cảm + Quy trình theo dõi chỉ số sức khỏe liên tục từ xa.",
+        q8: "Bác sĩ trực tiếp chẩn đoán, kê đơn và chịu trách nhiệm chuyên môn y khoa; Điều dưỡng thực hiện thao tác lấy mẫu tại nhà.",
+        q9: "Phần mềm tự động nhận kết quả từ máy đo huyết áp/đường huyết tại nhà, cảnh báo sớm chỉ số vượt ngưỡng và nhắc lịch uống thuốc qua Zalo.",
+        q10: "Vốn đầu tư cơ sở & thiết bị lưu động: 800 triệu VNĐ; Quỹ dự phòng vận hành 6 tháng.",
+        q11: "Chi phí tiếp cận (CAC) < 1.2 triệu/hộ; Giá trị vòng đời (LTV) > 36 triệu (gắn bó 3 năm); Biên lợi nhuận gộp > 50%; Hòa vốn ở 65 hộ.",
+        q12: "Bác sĩ & Điều dưỡng hưởng lương cứng + Phụ cấp quản lý hồ sơ hộ gia đình + Thưởng khi khách hàng tái ký năm tiếp theo."
+      },
+      sme_academy: {
+        scale: 'sme',
+        idea: "Đơn vị Kinh doanh (BU) Học viện Đào tạo Thực chiến & Tư vấn Chuyển giao Hệ thống Vận hành kết hợp Nhân sự số AI cho Doanh nghiệp SME Việt Nam.",
+        q1: "Chủ doanh nghiệp SME (doanh thu 10–100 tỷ/năm) đang bị kẹt trong sự vụ hàng ngày, nhân viên làm việc thiếu quy trình và muốn ứng dụng AI thực chất.",
+        q2: "Thu phí chương trình Huấn luyện & Chuyển giao 90 ngày (60 – 150 triệu/doanh nghiệp) + Gói cố vấn đồng hành hàng quý.",
+        q3: "Cam kết học đi đôi với hành: kết thúc khóa phải ra được Sơ đồ tổ chức, bộ SOP và các AI Agent chạy thật tại doanh nghiệp khách hàng.",
+        q4: "Tổ chức thành công 3 khóa huấn luyện B2B (tổng 30 doanh nghiệp tham gia), đạt doanh thu 2,4 tỷ VNĐ trong 90 ngày.",
+        q5: "BẮT BUỘC LÀM: Đóng gói sẵn bộ khung mẫu (Org Template Pack) để doanh nghiệp ráp vào dùng ngay; CẤM LÀM: Dạy lý thuyết suông hoặc nhận viết phần mềm riêng.",
+        q6: "Tổ chức buổi Workshop Chẩn đoán Mô hình Tổ chức cho nhóm 15–20 CEO mỗi tuần và lan tỏa qua kết quả thật của học viên cũ.",
+        q7: "Phương pháp luận Kiến trúc Doanh nghiệp 4 Tầng độc quyền + Đội ngũ Chuyên gia huấn luyện (Coach) giàu trải nghiệm thực tế.",
+        q8: "Chuyên gia Trưởng (Master Coach) dẫn dắt chiến lược, tháo gỡ nút thắt tâm thức cho CEO và nghiệm thu bản thiết kế cuối.",
+        q9: "AI Agent hỗ trợ học viên tự động hóa việc viết SOP phòng ban, phân tích biên bản họp và kiểm tra lỗi quy trình.",
+        q10: "Ngân sách vận hành khởi điểm 250 triệu VNĐ; Dòng tiền dương ngay từ khóa đầu tiên nhờ thu học phí trước.",
+        q11: "CAC < 12% doanh thu hợp đồng; Biên lợi nhuận gộp > 65%; Điểm hòa vốn: 4 doanh nghiệp/tháng.",
+        q12: "Cơ chế chia sẻ doanh thu minh bạch: Giảng viên & Coach triển khai nhận 30% giá trị hợp đồng khi khách hàng nghiệm thu đạt chuẩn."
+      },
+      sme_agri_d2c: {
+        scale: 'sme',
+        idea: "Đơn vị Kinh doanh (BU) Thương hiệu Thực phẩm Dinh dưỡng từ Hạt & Thảo dược bản địa Việt Nam chế biến sâu (Sữa hạt, Ngũ cốc, Trà dưỡng sinh) bán qua kênh D2C và Quà tặng B2B.",
+        q1: "Người tiêu dùng đô thị cần bữa phụ lành mạnh, tiện lợi mỗi sáng và các doanh nghiệp cần bộ quà tặng sức khỏe ý nghĩa, lịch sự dịp Lễ/Tết.",
+        q2: "Bán lẻ trực tiếp D2C theo liệu trình 30 ngày (возврат cao) + Hợp đồng cung cấp quà tặng sức khỏe số lượng lớn cho doanh nghiệp (tạm ứng 50%).",
+        q3: "Đầy đủ chứng nhận ISO/HACCP, công bố chất lượng sản phẩm, nguyên liệu thu mua từ vùng trồng Việt Nam minh bạch, không chất bảo quản.",
+        q4: "Đạt 1.000 khách hàng lẻ định kỳ hàng tháng và chốt 15 hợp đồng quà tặng doanh nghiệp (Tổng doanh thu 1,8 tỷ VNĐ trong 90 ngày).",
+        q5: "BẮT BUỘC LÀM: Đặt gia công (OEM) tại nhà máy đạt chuẩn quốc tế và tập trung vào R&D công thức + Thương hiệu; CẤM LÀM: Tự vay nợ xây nhà máy lớn khi chưa đủ sản lượng.",
+        q6: "Gửi bộ mẫu dùng thử (Sample Kit) cho Trưởng phòng Nhân sự/Công đoàn các công ty và mạng lưới Cộng tác viên sống khỏe.",
+        q7: "Công thức sản phẩm thơm ngon, hiệu quả cảm nhận rõ sau 7 ngày + Năng lực thiết kế bao bì câu chuyện văn hóa Việt tinh tế.",
+        q8: "Chuyên gia R&D kiểm định chất lượng lô hàng đầu vào/đầu ra; Trưởng phòng B2B đàm phán các hợp đồng doanh nghiệp lớn.",
+        q9: "Hệ thống tự động quản lý đơn hàng đa kênh, AI chăm sóc nhắc khách dùng đều đặn và gợi ý đặt lại khi sắp hết hộp 30 ngày.",
+        q10: "Vốn lưu động & làm mẫu ban đầu: 500 triệu VNĐ; Vòng quay hàng tồn kho < 25 ngày.",
+        q11: "Giá vốn hàng bán (COGS) < 38%; Biên lợi nhuận gộp > 62%; Tỷ lệ khách mua lại lần 2 đạt > 45%.",
+        q12: "Đội kinh doanh B2B & Cộng tác viên hưởng chiết khấu lũy tiến theo doanh số thực thu về tài khoản."
+      },
+      chain_wellness: {
+        scale: 'chain',
+        idea: "Chuỗi Trung tâm Chăm sóc Sức khỏe Chủ động, Trị liệu Cơ xương khớp – Cổ vai gáy và Dưỡng sinh Thân Tâm (Quy mô 5–20 cơ sở tại các khu dân cư và văn phòng).",
+        q1: "Nhân viên văn phòng, người kinh doanh và người trung niên bị đau mỏi vai gáy, tê bì chân tay, mất ngủ kinh niên muốn trị liệu an toàn, thư thái.",
+        q2: "Thu tiền trước qua Thẻ thành viên / Gói liệu trình 10–30 buổi dùng toàn chuỗi + Doanh thu sản phẩm thảo dược ngâm chân, gối thảo mộc tại nhà.",
+        q3: "Tuân thủ quy định hành nghề dịch vụ chăm sóc sức khỏe; Kỹ thuật viên có chứng chỉ bài bản; Tuyệt đối không tư vấn hù dọa khách hàng.",
+        q4: "Chuẩn hóa 3 cơ sở hiện hữu đạt công suất lấp đầy > 75% và mở mới 2 cơ sở vệ tinh đạt điểm hòa vốn ngay trong tháng thứ 2.",
+        q5: "BẮT BUỘC LÀM: Đồng nhất 100% quy trình 60 phút trị liệu và thái độ phục vụ tĩnh lặng; CẤM LÀM: Thuê mặt bằng mặt phố quá đắt đỏ làm gãy cấu trúc chi phí.",
+        q6: "Trải nghiệm buổi đầu 199k cho cư dân và nhân viên văn phòng bán kính 2km quanh cơ sở + Chương trình Thẻ gia đình dùng chung.",
+        q7: "Học viện đào tạo tay nghề nội bộ cấp tốc trong 21 ngày + Hệ thống quản trị chất lượng điểm bán theo thời gian thực.",
+        q8: "Giám đốc Đào tạo Tay nghề kiểm định kỹ thuật viên; Cửa hàng trưởng giữ lửa đội ngũ và xử lý phản hồi trực tiếp của khách tại điểm.",
+        q9: "Hệ thống Booking tự động phân bổ giường và kỹ thuật viên, AI tự động gọi/nhắn Zalo xin đánh giá sau mỗi buổi làm dịch vụ.",
+        q10: "Vốn mở 1 điểm vệ tinh tiêu chuẩn: 400 – 600 triệu VNĐ; Thời gian thu hồi vốn mỗi điểm: 8 – 11 tháng.",
+        q11: "Chi phí mặt bằng < 12% doanh thu; Biên lợi nhuận EBITDA mỗi điểm đạt 25–30%; Tỷ lệ khách gia hạn thẻ > 50%.",
+        q12: "Kỹ thuật viên nhận lương cứng + Tiền công từng ca thực hiện + Thưởng chất lượng theo điểm đánh giá 5 sao của khách hàng."
+      },
+      plat_telehealth: {
+        scale: 'platform',
+        idea: "Nền tảng Hệ sinh thái Y tế số (Telehealth & IoMT Platform): Kết nối thiết bị đo sức khỏe tại nhà với mạng lưới hàng trăm Bác sĩ chuyên khoa, Điều dưỡng tự do và Nhà thuốc trên toàn quốc.",
+        q1: "Hàng triệu hộ gia đình Việt Nam cần theo dõi sức khỏe chủ động từ xa và đội ngũ Bác sĩ/Điều dưỡng muốn gia tăng thu nhập hợp pháp ngoài giờ.",
+        q2: "Thu phí thuê bao nền tảng hàng năm + Chiết khấu phân phối bộ thiết bị đo IoMT + Phí chia sẻ doanh thu (15–25%) từ mỗi ca tư vấn/chăm sóc tại nhà.",
+        q3: "Đảm bảo an toàn dữ liệu y tế theo Nghị định 13/2023 và quy chuẩn Bộ Y tế; Xác thực chứng chỉ hành nghề 100% bác sĩ tham gia mạng lưới.",
+        q4: "Tích hợp hoàn chỉnh 3 dòng máy đo IoMT, kết nối 100 Bác sĩ/Điều dưỡng đối tác và phục vụ 1.000 hộ gia đình hoạt động thường xuyên.",
+        q5: "BẮT BUỘC LÀM: Xây dựng trung tâm dữ liệu sức khỏe chuẩn xác và luồng điều phối bác sĩ tự động; CẤM LÀM: Tự tuyển cố định hàng trăm bác sĩ ăn lương cứng.",
+        q6: "Phát triển qua mạng lưới Cộng tác viên Y tế cộng đồng, các Phòng khám liên kết và chương trình An sinh Sức khỏe cho doanh nghiệp/trường học.",
+        q7: "Hạ tầng Công nghệ IoMT & Hồ sơ sức khỏe điện tử (EHR) + Cơ chế điều phối mạng lưới đối tác y tế 2 đầu.",
+        q8: "Hội đồng Y khoa Cố vấn thẩm định quy trình chuyên môn; Ban Điều phối Nền tảng phê duyệt đối tác lớn và chính sách chia sẻ doanh thu.",
+        q9: "AI Agent phân tích xu hướng chỉ số đo bất thường 24/7, tự động ghép nối bác sĩ trực gần nhất và tự động đối soát chia tiền cho các bên.",
+        q10: "Vốn đầu tư nền tảng giai đoạn 1: 2 – 3 tỷ VNĐ; Duy trì Runway 12–18 tháng để đạt quy mô mạng lưới tới hạn (Critical Mass).",
+        q11: "Biên lợi nhuận phần mềm & dữ liệu > 75%; Tỷ lệ giữ chân hộ gia đình hàng năm > 80%; Chi phí biên phục vụ thêm 1 user rất thấp.",
+        q12: "Đối tác Bác sĩ/Điều dưỡng nhận 75–85% phí dịch vụ; Cộng tác viên phát triển mạng lưới nhận hoa hồng giới thiệu 1 tầng minh bạch."
+      },
+      plat_b2b2c: {
+        scale: 'platform',
+        idea: "Nền tảng Xúc tiến Thương mại & Điều phối Chuỗi cung ứng Nông sản / Thực phẩm thiết yếu 2 đầu (Không ôm hàng tồn kho): Kết nối trực tiếp Vùng trồng/Nhà máy chuẩn với Mạng lưới Trưởng điểm cộng đồng chung cư.",
+        q1: "Nông trại/Nhà máy sản xuất tốt bị đứt đầu ra hoặc bị ép giá; Cư dân chung cư muốn mua thực phẩm tận gốc giá hợp lý, tươi mới.",
+        q2: "Khách đặt trước và thanh toán qua Trưởng điểm gom chung cư ➔ Nền tảng chốt tổng sản lượng với Nhà cung cấp ➔ Thu phí điều phối 12–18%.",
+        q3: "Hàng thật, kiểm định chất lượng thật, hóa đơn chứng từ đầy đủ; Không đầu cơ ép giá nông dân, tuân thủ đúng cam kết giao nhận.",
+        q4: "Mở rộng 50 điểm gom hàng cộng đồng tại các khu đô thị và kết nối 25 nhà cung cấp chủ lực, đạt GMV 3 tỷ VNĐ/tháng trong 90 ngày.",
+        q5: "BẮT BUỘC LÀM: Khớp đơn bán trước khi xuất hàng để tồn kho bằng 0 (WIP = 0); CẤM LÀM: Bỏ vốn ôm kho hàng loạt hoặc bán chịu công nợ dài ngày.",
+        q6: "Tuyển chọn các Trưởng nhóm uy tín sẵn có tại từng tòa chung cư và tổ chức phiên chợ trải nghiệm trực tiếp cuối tuần.",
+        q7: "Năng lực thẩm định nhà cung cấp đầu nguồn + Hệ thống công nghệ gom đơn, chia hàng và đối soát dòng tiền tức thì.",
+        q8: "Ban Thẩm định Nguồn cung kiểm tra thực địa nhà máy/nông trại; Giám đốc Mạng lưới phát triển các Trưởng điểm cộng đồng hạt nhân.",
+        q9: "Hệ thống tự động tổng hợp đơn từ 50 điểm gom, sinh lệnh xuất kho cho nhà máy, tối ưu lộ trình xe giao và chia hoa hồng tự động ngay khi giao xong.",
+        q10: "Vốn vận hành nền tảng: 600 triệu VNĐ; Dòng tiền luôn dương vì thu tiền khách hàng trước khi thanh toán cho nhà cung cấp.",
+        q11: "Vòng quay vốn lưu động: 3–5 ngày; Tỷ lệ hao hụt < 1.5%; Biên lợi nhuận ròng của nền tảng đạt 8–12% trên tổng GMV.",
+        q12: "Trưởng điểm cộng đồng nhận ngay 8–10% doanh số gom đơn; Nhà cung cấp nhận thanh toán đúng hạn ngay sau khi nghiệm thu lô hàng."
+      }
+    };
+
+    function selectScale(scaleKey) {
+      selectedScale = scaleKey;
+      ['micro', 'sme', 'chain', 'platform'].forEach(k => {
+        const el = document.getElementById('sc-' + k);
+        if (el) el.classList.toggle('selected', k === scaleKey);
+      });
+    }
+
+    function loadIdea(ideaKey) {
+      selectedIdeaKey = ideaKey;
+      const data = ideaPresets[ideaKey];
+      if (!data) return;
+
+      selectScale(data.scale);
+
+      Object.keys(ideaPresets).forEach(k => {
+        const card = document.getElementById('id-' + k);
+        if (card) card.classList.toggle('active', k === ideaKey);
+      });
+
+      document.getElementById('seed-idea').value = data.idea;
+      for (let i = 1; i <= 12; i++) {
+        const input = document.getElementById('f-q' + i);
+        if (input) input.value = data['q' + i] || '';
+      }
+    }
+
+    function goStep(stepNum) {
+      if (stepNum === 2) {
+        const ideaVal = document.getElementById('seed-idea').value.trim();
+        if (!ideaVal) {
+          alert('Vui lòng chọn 1 ý tưởng mẫu hoặc nhập mô tả dự án của anh trước!');
+          return;
+        }
+      }
+      if (stepNum === 3) {
+        renderBlueprintV1();
+        return;
+      }
+
+      document.getElementById('step-1-view').style.display = stepNum === 1 ? 'block' : 'none';
+      document.getElementById('step-2-view').style.display = stepNum === 2 ? 'block' : 'none';
+      document.getElementById('step-3-view').style.display = stepNum === 3 ? 'block' : 'none';
+
+      [1, 2, 3].forEach(n => {
+        document.getElementById('wiz-' + n).classList.toggle('active', n === stepNum);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderBlueprintV1() {
+      const idea = document.getElementById('seed-idea').value.trim();
+      const q = {};
+      for (let i = 1; i <= 12; i++) {
+        q[i] = document.getElementById('f-q' + i).value.trim();
+      }
+
+      const cfg = scaleConfigs[selectedScale];
+
+      // Banner
+      document.getElementById('rep-scale-tag').innerText = cfg.name;
+      document.getElementById('rep-idea-summary').innerText = idea;
+
+      // Tầng 1: 4 Blocks
+      document.getElementById('rep-b1-cust').innerText = q[1];
+      document.getElementById('rep-b1-cash').innerText = q[2];
+      document.getElementById('rep-b1-moat').innerText = q[3];
+
+      document.getElementById('rep-b2-goal').innerText = q[4];
+      const parts = q[5].split(/CẤM LÀM:|KHÔNG LÀM:/i);
+      document.getElementById('rep-b2-do').innerText = (parts[0] || q[5]).replace(/BẮT BUỘC LÀM:|LÀM:/i, '').trim();
+      document.getElementById('rep-b2-dont').innerText = (parts[1] || 'Không dàn trải nguồn lực ngoài mục tiêu V1.').trim();
+
+      document.getElementById('rep-b3-cap').innerText = q[7];
+      document.getElementById('rep-b3-human').innerText = q[8];
+      document.getElementById('rep-b3-ai').innerText = q[9];
+
+      document.getElementById('rep-b4-unit').innerText = q[11];
+      document.getElementById('rep-b4-runway').innerText = q[10];
+      document.getElementById('rep-b4-inc').innerText = q[12];
+
+      // Tầng 2: Visual Org Tree
+      document.getElementById('tree-root-title').innerText = cfg.rootTitle;
+      document.getElementById('tree-root-desc').innerText = `${cfg.rootDesc} • Nút thắt: ${q[8]}`;
+
+      const branchesContainer = document.getElementById('tree-branches-container');
+      branchesContainer.innerHTML = cfg.branches.map(b => `
+        <div class="tree-branch-col ${b.cls}">
+          <div class="branch-head">${b.title}</div>
+          <div class="branch-explain">${b.explain}</div>
+          <div class="sub-roles-list">
+            ${b.roles.map(r => `
+              <div class="sub-role-item">
+                <b>• ${r.name}</b>
+                <span>${r.desc}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      // Tầng 3A: Infra AI explanation
+      document.getElementById('rep-infra-ai-explain').innerText = `Cụ thể trong dự án này: ${q[9]}`;
+
+      // Tầng 3B: Value Stream Pipeline
+      const pipeContainer = document.getElementById('rep-pipeline-container');
+      pipeContainer.innerHTML = cfg.streams.map(s => `
+        <div class="pipe-step">
+          <span class="pipe-num">${s.num}</span>
+          <div class="pipe-title">${s.title}</div>
+          <div class="pipe-desc">${s.desc}</div>
+          <div class="pipe-data">🗄️ ${s.data}</div>
+        </div>
+      `).join('');
+
+      // Tầng 4: RACI & Scorecard Table
+      const raciBody = document.getElementById('rep-raci-body');
+      raciBody.innerHTML = `
+        <tr>
+          <td><b>1. Định hướng Chiến lược & Duyệt Ngân sách</b></td>
+          <td>Founder / Chủ thể quyền</td>
+          <td>Founder & Cố vấn</td>
+          <td>Dashboard P&L & Sổ Cược</td>
+          <td>${q[10]}</td>
+        </tr>
+        <tr>
+          <td><b>2. Phát triển Sản phẩm & Kiểm định Chất lượng</b></td>
+          <td>${cfg.branches[0].roles[0].name}</td>
+          <td>Đội ngũ Chuyên môn + AI</td>
+          <td>SOP Chuẩn & Gate 1–4</td>
+          <td>${q[7]}</td>
+        </tr>
+        <tr>
+          <td><b>3. Tiếp cận Thị trường & Chuyển đổi Doanh thu</b></td>
+          <td>${cfg.branches[1].roles[0].name}</td>
+          <td>Đội Tăng trưởng & Bot</td>
+          <td>CRM & Kênh ${q[6].substring(0, 35)}...</td>
+          <td>${q[4]}</td>
+        </tr>
+        <tr>
+          <td><b>4. Vận hành, Tự động hóa & Đối soát Dòng tiền</b></td>
+          <td>${cfg.branches[3].roles[0].name}</td>
+          <td>Hệ thống AI & Kế toán</td>
+          <td>${q[9].substring(0, 45)}...</td>
+          <td>${q[11]}</td>
+        </tr>
+      `;
+
+      document.getElementById('step-1-view').style.display = 'none';
+      document.getElementById('step-2-view').style.display = 'none';
+      document.getElementById('step-3-view').style.display = 'block';
+
+      [1, 2, 3].forEach(n => {
+        document.getElementById('wiz-' + n).classList.toggle('active', n === 3);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function generateMarkdownText() {
+      const idea = document.getElementById('seed-idea').value.trim();
+      const cfg = scaleConfigs[selectedScale];
+      const q = {};
+      for (let i = 1; i <= 12; i++) q[i] = document.getElementById('f-q' + i).value.trim();
+
+      const branchMD = cfg.branches.map(b => {
+        const rolesMD = b.roles.map(r => `  - **${r.name}:** ${r.desc}`).join('\n');
+        return `### ${b.title}\n*Giải nghĩa chức năng:* ${b.explain}\n${rolesMD}`;
+      }).join('\n\n');
+
+      const streamMD = cfg.streams.map(s => `1. **${s.num} — ${s.title}:** ${s.desc} *(Dữ liệu gốc: \`${s.data}\`)*`).join('\n');
+
+      return `# BÁO CÁO ĐỊNH HƯỚNG KIẾN TRÚC MÔ HÌNH TỔ CHỨC V1
+> **Quy mô tổ chức:** ${cfg.name}  
+> **Ngày xuất bản:** ${new Date().toISOString().slice(0, 10)} | **Chuẩn kiến trúc:** BMAA-OS Enterprise Architecture v3.0
+
+---
+
+## 💡 1. BÀI TOÁN & Ý TƯỞNG KHỞI NGUỒN
+${idea}
+
+---
+
+## 🧭 2. TẦNG 1: HOẠCH ĐỊNH 4 BLOCKS NỀN TẢNG (MASTER STRATEGIC QUAD)
+
+### Block 1 — Mô Hình Kinh Doanh (Mỏ Vàng)
+- **Khách hàng trả tiền & Nỗi đau cấp bách:** ${q[1]}
+- **Cơ chế thu tiền & Luân chuyển dòng tiền:** ${q[2]}
+- **Rào cản phòng thủ (Moat) & Tuân thủ 5 Luật:** ${q[3]}
+
+### Block 2 — Kế Hoạch Chiến Lược (Cách Đào Vàng)
+- **Đích thực chứng 90 ngày đầu (V1):** ${q[4]}
+- **Ranh giới đánh đổi (Việc LÀM vs. Việc CẤM LÀM):** ${q[5]}
+- **Kênh tiếp cận khách hàng hạt nhân (Go-To-Market):** ${q[6]}
+
+### Block 3 — Hạ Tầng Tổ Chức & Công Nghệ (Người Đào & AI)
+- **Năng lực lõi sống còn (Core Capability):** ${q[7]}
+- **Nút thắt Con người (Human Bottlenecks):** ${q[8]}
+- **Đòn bẩy AI Agents & Tự động hóa:** ${q[9]}
+
+### Block 4 — Mô Hình Tài Chính (Bệ Đỡ Kinh Tế)
+- **Trần ngân sách & Quỹ dự phòng sinh tồn (Runway):** ${q[10]}
+- **Kinh tế đơn vị (CAC, LTV, Margin, Điểm hòa vốn):** ${q[11]}
+- **Cơ chế chia sẻ lợi ích & Khoán hiệu quả:** ${q[12]}
+
+---
+
+## 🌳 3. TẦNG 2: SƠ ĐỒ CƠ CẤU TỔ CHỨC & PHÂN VAI HUMAN × AI (T1 ORG & T2 ROLE)
+
+### Cấp Lãnh Đạo Tối Cao (L1): ${cfg.rootTitle}
+- **Bổn phận:** ${cfg.rootDesc}
+- **Nút thắt trực tiếp nắm giữ:** ${q[8]}
+
+${branchMD}
+
+---
+
+## 🛡️ 4. TẦNG 3: HẠ TẦNG QUẢN TRỊ 5 LỚP & CHUỖI GIÁ TRỊ NGHIỆP VỤ (T5 PROC & T6 DATA)
+
+### 4.1. Cấu Trúc Hạ Tầng Quản Trị Đồng Tâm (5 Lớp)
+1. **Tâm điểm HR (Con người):** Thực thi tròn vai, tạo kết quả thật.
+2. **Lớp 1 — Quy trình vận hành (Operational Procedures / SOP):** Chuẩn hóa thao tác từng bước.
+3. **Lớp 2 — Hệ thống báo cáo & Chính sách (Reporting & Policies):** Dashboard minh bạch và thưởng phạt công tâm.
+4. **Lớp 3 — Cơ cấu tổ chức (Organizational Structure):** Phân quyền RACI không chồng chéo.
+5. **Lớp 4 — Giá trị cốt lõi & Văn hóa 5 Luật (Core Values & Culture):** Giữ đạo đức và sự chính trực.
+6. **Lớp vỏ Số hóa (Digitalization & AI):** ${q[9]}
+
+### 4.2. Chuỗi Giá Trị Cốt Lõi 5 Bước (Core Value Stream)
+${streamMD}
+
+---
+
+## 🎯 5. TẦNG 4: ĐO LƯỜNG OKRs 90 NGÀY & VÒNG LẶP KAIZEN / ANDON
+- **OKR 1 (Mục tiêu hạt nhân 90 ngày):** ${q[4]}
+- **OKR 2 (Chuẩn Kinh tế đơn vị):** ${q[11]}
+- **OKR 3 (Kỷ luật Ngân sách):** ${q[10]}
+- **Cơ chế Jidoka Andon & Kaizen 2 Chiều:** Bất kỳ nhân sự nào phát hiện dữ liệu sai lệch hoặc lỗi chất lượng đều có quyền giật dây Andon dừng luồng để giải cảnh ngay tại nguồn, tuyệt đối không chạy theo KPI ảo.
+`;
+    }
+
+    function copyReportMD() {
+      navigator.clipboard.writeText(generateMarkdownText()).then(() => {
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 3000);
+      });
+    }
+
+    function downloadReportMD() {
+      const blob = new Blob([generateMarkdownText()], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Bao-Cao-Kien-Truc-To-Chuc-V1-${selectedScale}-${new Date().toISOString().slice(0, 10)}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Init default
+    loadIdea('micro_saas');
+  </script>
+</body>
+</html>
